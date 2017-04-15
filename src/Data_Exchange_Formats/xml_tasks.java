@@ -7,7 +7,7 @@ import javax.xml.parsers.*;
 import org.w3c.dom.*;
 import java.util.*;
 
-public class tasks {
+public class xml_tasks {
 	public static void main(String argv[]){		
 		String x_path_expr = "";
 		
@@ -20,7 +20,6 @@ public class tasks {
 		//x_path_expr = "/mondial/*";
 		//duplicat_free_attributes(doc, x_path_expr);
 				
-		
 		//task 2.3
 		/*
 		we are looking for continents with id = "f0_119" because the the id of the continent "europe"
@@ -28,47 +27,57 @@ public class tasks {
 		
 		get all country nodes which have an child node (encompassed) which has an attribute with value "f0_119"
 		*/
-		x_path_expr = "//country[encompassed/@continent = 'f0_119']";
-		get_european_counries(doc, x_path_expr);
+		//x_path_expr = "//country[encompassed/@continent = 'f0_119']";
+		//get_countries_by_continent(doc, x_path_expr, false);
 		
+		//task 2.4
+		/*
+		same as task 2.3 but adding aisa (id = "f0_123") via an "or" statement in xpath
+		*/
+		//x_path_expr = "//country[encompassed/@continent = 'f0_119' or encompassed/@continent = 'f0_123']";
+		//get_countries_by_continent(doc, x_path_expr, false);
 		
-		//duplicat_free_attributes(doc);
-		//get_european_counries(doc);
+		//task 2.5
+		/*
+		same as task 2.4 but printing all all attributes
+		*/
+		x_path_expr = "//country[encompassed/@continent = 'f0_119' or encompassed/@continent = 'f0_123']";
+		get_countries_by_continent(doc, x_path_expr, true);
 	}
 	
-	public static void get_european_counries(Document doc, String expr){
+	public static void get_countries_by_continent(Document doc, String expr, boolean with_attributes){
 		// get list of all nodes matching xpath
 		XPathExpression xpath = get_xpath(expr);
 		NodeList nodes = execute_xpath(doc, xpath);
 		
 		// loop all nodes
 		for(int i = 0; i < nodes.getLength(); i++){
-			//System.out.println(nodes.item(i).getNodeName());
-
-			// get all the attributes from current node
-			//NamedNodeMap attr = nodes.item(i).getAttributes();
 			
-			/*
-			for(int j = 0; j < attr.getLength(); j++){
-				//if(attr.item(j).getNodeName() == "id" ){
-				//if(attr.item(j).getNodeValue() == "f0_119" ){
-					//System.out.println(attr.item(j).getNodeValue());
-				//System.out.println(attr.item(j).getNodeName());
-					//System.out.println(attr.item(j).getChildNodes().item(0).getNodeValue());
+			if(with_attributes){
+				// get all the attributes of the current node (item[i])
+				NamedNodeMap attr = nodes.item(i).getAttributes();
+				
+				// loop through all the attributes
+				for(int j = 0; j < attr.getLength(); j++){
+					//get the name of the attribute
+					String name = attr.item(j).getNodeName();
+					// get the value of the attribute
+					String value = attr.item(j).getNodeValue();
 					
-				//}				
-				//System.out.println(attr.item(j).getNodeName() + ": " + attr.item(j).getNodeValue());
+					System.out.println("Attribut Name: " + name + " \twith Value: " + value);
+				}
+			}else{
+				// task 2.3 and 2.4
+				
+				// for validation get the continent attribute of the encompassed node
+				// cast the current node to "Element" so that specific properties of the object are accessible
+				Element current = (Element) nodes.item(i);
+				// get the continent attribute in a static way (expecting always one encompassed child node with one attribute)
+				String continent = current.getElementsByTagName("encompassed").item(0).getAttributes().getNamedItem("continent").getNodeValue().toString();
+				String country = current.getAttribute("name");
+				
+				System.out.println("country: " + country + " \tin continent: " +  continent);			
 			}
-			*/
-			
-			// for validation get the continent attribute of the encompassed node
-			// cast the current node to "Element" so that specific properties of the object are accessible
-			Element current = (Element) nodes.item(i);
-			// get the continent attribute in a static way (expecting always one encompassed child node with one attribute)
-			String continent = current.getElementsByTagName("encompassed").item(0).getAttributes().getNamedItem("continent").getNodeValue().toString();
-			String country = current.getAttribute("name");
-			
-			System.out.println("country: " + country + " in continent: " +  continent);
 		}
 	}
 	
