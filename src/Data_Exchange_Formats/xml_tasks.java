@@ -8,42 +8,6 @@ import org.w3c.dom.*;
 import java.util.*;
 
 public class xml_tasks {
-	public static void main(String argv[]){		
-		String x_path_expr = "";
-		
-		//task 2.1
-		File file = new File("./mondial-3.0.xml");
-		Document doc = parse_xml_file(file);	
-		doc.getDocumentElement().normalize();
-		
-		//task 2.2
-		//x_path_expr = "/mondial/*";
-		//duplicat_free_attributes(doc, x_path_expr);
-				
-		//task 2.3
-		/*
-		we are looking for continents with id = "f0_119" because the the id of the continent "europe"
-		extract from XML: <continent id="f0_119" name="Europe"/>		
-		
-		get all country nodes which have an child node (encompassed) which has an attribute with value "f0_119"
-		*/
-		//x_path_expr = "//country[encompassed/@continent = 'f0_119']";
-		//get_countries_by_continent(doc, x_path_expr, false);
-		
-		//task 2.4
-		/*
-		same as task 2.3 but adding aisa (id = "f0_123") via an "or" statement in xpath
-		*/
-		//x_path_expr = "//country[encompassed/@continent = 'f0_119' or encompassed/@continent = 'f0_123']";
-		//get_countries_by_continent(doc, x_path_expr, false);
-		
-		//task 2.5
-		/*
-		same as task 2.4 but printing all all attributes
-		*/
-		x_path_expr = "//country[encompassed/@continent = 'f0_119' or encompassed/@continent = 'f0_123']";
-		get_countries_by_continent(doc, x_path_expr, true);
-	}
 	
 	public static void get_countries_by_continent(Document doc, String expr, boolean with_attributes){
 		// get list of all nodes matching xpath
@@ -86,7 +50,6 @@ public class xml_tasks {
 		NodeList nodes = null;
 		
 		XPathExpression expr = get_xpath(expr_str);		
-		
 		try{
 			nodes = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
 
@@ -173,5 +136,11 @@ public class xml_tasks {
 		}
 	}
 	
-	
+	public static Document get_doc(String path){
+		File file = new File(path);
+		Document doc = parse_xml_file(file);	
+		doc.getDocumentElement().normalize();
+		
+		return doc;
+	}
 }
