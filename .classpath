@@ -3,6 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry excluding="src/" kind="src" path=""/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/home/markus/eclipse/workbench/Web-Data-Integration/src/Data_Exchange_Formats/gson-2.6.2.jar"/>
+	<classpathentry kind="lib" path="/home/markus/eclipse/workspace/Web-Data-Integration/gson-2.6.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
