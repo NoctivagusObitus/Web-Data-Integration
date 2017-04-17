@@ -9,11 +9,10 @@ import java.util.*;
 
 public class xml_tasks {
 	
-	public static void get_countries_by_continent(Document doc, String expr, boolean with_attributes){
+	public static void get_countries_by_continent(Document doc, String expr, boolean with_attributes) throws XPathExpressionException{
 		// get list of all nodes matching xpath
 		XPathExpression xpath = get_xpath(expr);
-		NodeList nodes = execute_xpath(doc, xpath);
-		
+		NodeList nodes = get_node_list(doc);
 		// loop all nodes
 		for(int i = 0; i < nodes.getLength(); i++){
 			
@@ -52,7 +51,6 @@ public class xml_tasks {
 		XPathExpression expr = get_xpath(expr_str);		
 		try{
 			nodes = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
-
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -70,7 +68,6 @@ public class xml_tasks {
 					}
 				}
 			}	
-
 		}
 		print_array(attributes);
 	}
@@ -85,7 +82,6 @@ public class xml_tasks {
 			}
 			//System.out.println(attr.item(j).getNodeName());
 		}
-		
 		return found;
 	}
 
@@ -99,7 +95,6 @@ public class xml_tasks {
 			e.printStackTrace();
 		}
 		return doc;
-
 	}
 
 	public static NodeList execute_xpath(Document doc, XPathExpression expr){
@@ -143,4 +138,13 @@ public class xml_tasks {
 		
 		return doc;
 	}
+	
+    public static NodeList get_node_list(Document doc) throws XPathExpressionException{    	
+    	XPathFactory xpathFactory = XPathFactory.newInstance();
+    	XPath xpath = xpathFactory.newXPath();
+    	XPathExpression expr = xpath.compile("//country[encompassed/@continent = 'f0_119' or encompassed/@continent = 'f0_123']");
+    	
+    	NodeList list = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
+    	return list;
+    }
 }

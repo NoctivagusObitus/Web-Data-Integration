@@ -2,7 +2,9 @@ package Data_Exchange_Formats;
 
 //import org.json.*;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.xpath.*;
@@ -16,6 +18,69 @@ import org.w3c.dom.NodeList;
 import com.google.gson.*;
 
 public class json_tasks {
+	
+	public static void json_class(Document doc) throws IOException, XPathExpressionException{
+		Gson gson = new Gson();
+
+		BufferedWriter writer = get_writer("tasks.json");
+		NodeList list = get_node_list(doc);
+		
+		long total_population = 0;
+		
+		ArrayList<json_country_class> objects = new ArrayList<json_country_class>();
+		
+		for(int i = 0; i < list.getLength(); i++) {
+			json_country_class object = new json_country_class();
+			
+			Node n = (Node) list.item(i);
+			NamedNodeMap map = n.getAttributes();
+			Map<String, String> values = new HashMap<String, String>();
+			
+			// check each field 
+			if(map.getNamedItem("id") == null){
+				object.id = "";
+			}else{
+				object.id = map.getNamedItem("id").getNodeValue().toString();
+			}
+			
+			if(map.getNamedItem("car_code") == null){
+				object.car_code = "";
+			}else{
+				object.car_code = map.getNamedItem("car_code").getNodeValue().toString();
+			}
+			 
+			if(map.getNamedItem("name") == null){
+				object.name = "";
+			}else{
+				object.name = map.getNamedItem("name").getNodeValue().toString();
+			}
+
+			
+			System.out.println("population: " + map.getNamedItem("population"));
+			System.out.println("coubtry: " + object.name);
+			
+			if(map.getNamedItem("population") == null){
+				object.population = 0;
+			}else{
+				object.population = Long.parseLong(map.getNamedItem("population").getNodeValue().toString());
+			}
+
+
+			//object.population = Long.parseLong(map.getNamedItem("population").getNodeValue());
+
+			
+			objects.add(object);
+		}
+		
+		for(int i = 0; i < objects.size(); i++) {
+			System.out.println("coubtry: " + objects.get(i).name + " with population: " + objects.get(i).population);
+			total_population += objects.get(i).population;
+		}
+		
+		System.out.println("total population: " + total_population);
+
+		writer.close();
+	}
 	
 	public static void xml_to_json(Document doc) throws IOException, XPathExpressionException{
 		Gson gson = new Gson();

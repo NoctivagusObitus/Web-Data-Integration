@@ -12,11 +12,11 @@ import org.w3c.dom.NodeList;
 public class main {
 	public static void main(String argv[]) throws XPathExpressionException, IOException{		
 
-		//xml_tasks();
-		json_tasks();
+		xml_tasks();
+		//json_tasks();
 	}
 	
-	public static void xml_tasks(){
+	public static void xml_tasks() throws XPathExpressionException{
 		xml_tasks xml_tasks = new xml_tasks();
 		
 		String x_path_expr = "";
@@ -26,8 +26,8 @@ public class main {
 		Document doc = xml_tasks.get_doc("./mondial-3.0.xml");
 		
 		//task 2.2
-		//x_path_expr = "/mondial/*";
-		//xml_tasks.duplicat_free_attributes(doc, x_path_expr);
+		x_path_expr = "/mondial//*";
+		xml_tasks.duplicat_free_attributes(doc, x_path_expr);
 				
 		//task 2.3
 		/*
@@ -50,8 +50,8 @@ public class main {
 		/*
 		same as task 2.4 but printing all all attributes
 		*/
-		x_path_expr = "//country[encompassed/@continent = 'f0_119' or encompassed/@continent = 'f0_123']";
-		xml_tasks.get_countries_by_continent(doc, x_path_expr, true);
+		//x_path_expr = "//country[encompassed/@continent = 'f0_119' or encompassed/@continent = 'f0_123']";
+		//xml_tasks.get_countries_by_continent(doc, x_path_expr, true);
 	}
 
 	public static void json_tasks() throws IOException, XPathExpressionException{
@@ -62,7 +62,10 @@ public class main {
 		XPathExpression expr = xml_tasks.get_xpath("//country[encompassed/@continent = 'f0_119' or encompassed/@continent = 'f0_123']");
 		NodeList list = xml_tasks.execute_xpath(doc, expr);
 		
-		json_tasks.xml_to_json(doc);
+		// task 2.6
+		//json_tasks.xml_to_json(doc);
 		
+		// task 2.7
+		//json_tasks.json_class(doc);
 	}
 }
